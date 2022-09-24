@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Sound", menuName = "Sound")]
-public class Sound : ScriptableObject
+[CreateAssetMenu(fileName = "New Music", menuName = "Music")]
+public class Music : ScriptableObject
 {
     public AudioClip audioClip;
     public string audioName;
@@ -18,4 +18,6 @@ public class Sound : ScriptableObject
     public bool isPlayedOnAwake = false;
 
     public float delay = 0;
+
+    public double smkfdgj;
 }

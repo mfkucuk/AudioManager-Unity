@@ -5,7 +5,10 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     [SerializeField]
-    private Sound[] _soundList;
+    private Music[] _musicList;
+
+    [SerializeField]
+    private SoundEffect[] _soundEffectList;
 
     private AudioSource _audioSource;
 
@@ -16,18 +19,19 @@ public class AudioManager : MonoBehaviour
     }
 
     /**
-     * Important info: this function should only be used when playing sound effects.
-     * (such as jumping, hurting, dealing damage and so on.)
-     * @param audioName: name of the sound effect to be played.
+     * <summary>
+     * This function should only be used when playing music.
+     * <paramref name="audioName"/> is the name of the sound effect to be played.
+     * </summary>
      */
     public bool PlaySoundEffect(string audioName)
     {
-        foreach (Sound sound in _soundList)
+        foreach (SoundEffect soundEffect in _soundEffectList)
         {
-            if (audioName.Equals(sound.audioName))
+            if (audioName.Equals(soundEffect.audioName))
             {
                 // Play the audio source
-                _audioSource.PlayOneShot(sound.audioClip, sound.volume);
+                _audioSource.PlayOneShot(soundEffect.audioClip, soundEffect.volume);
                 return true;
             }
         }
@@ -36,21 +40,23 @@ public class AudioManager : MonoBehaviour
     }
 
     /**
-     * Important info: this function should only be used when playing music.
-     * @param musicName: name of the music to be played.
+     * <summary>
+     * This function should only be used when playing music.
+     * <paramref name="musicName"/> is the name of the music to be played.
+     * </summary>
      */
     public bool PlayMusic(string musicName)
     {
-        foreach (Sound sound in _soundList)
+        foreach (Music music in _musicList)
         {
-            if (musicName.Equals(sound.audioName))
+            if (musicName.Equals(music.audioName))
             {
                 // Assign the necessary information from the scriptable object
-                _audioSource.clip = sound.audioClip;
-                _audioSource.volume = sound.volume;
-                _audioSource.pitch = sound.pitch;
-                _audioSource.loop = sound.isLooping;
-                _audioSource.playOnAwake = sound.isPlayedOnAwake;
+                _audioSource.clip = music.audioClip;
+                _audioSource.volume = music.volume;
+                _audioSource.pitch = music.pitch;
+                _audioSource.loop = music.isLooping;
+                _audioSource.playOnAwake = music.isPlayedOnAwake;
 
                 // Play the audio source
                 _audioSource.Play();
@@ -61,11 +67,17 @@ public class AudioManager : MonoBehaviour
         return false;
     }
 
-    public bool StopMusic(string audioName)
+    /**
+     * <summary>
+     * This function should only be used when playing music.
+     * <paramref name="musicName"/> is the name of the music to be played.
+     * </summary>
+     */
+    public bool StopMusic(string musicName)
     {
-        foreach (Sound sound in _soundList)
+        foreach (Music music in _musicList)
         {
-            if (audioName.Equals(sound.audioName))
+            if (musicName.Equals(music.audioName))
             {
                 // Stop the audio source
                 _audioSource.Stop();
