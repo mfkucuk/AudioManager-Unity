@@ -45,7 +45,7 @@ public class AudioManager : MonoBehaviour
      * <paramref name="musicName"/> is the name of the music to be played.
      * </summary>
      */
-    public bool PlayMusic(string musicName)
+    public bool PlayMusic(string musicName, bool resume)
     {
         foreach (Music music in _musicList)
         {
@@ -59,7 +59,14 @@ public class AudioManager : MonoBehaviour
                 _audioSource.playOnAwake = music.isPlayedOnAwake;
 
                 // Play the audio source
-                _audioSource.Play();
+                if (resume)
+                {
+                    _audioSource.PlayScheduled(music.currentTime);
+                }
+                else
+                {
+                    _audioSource.Play();
+                }
                 return true;
             }
         }
@@ -79,6 +86,9 @@ public class AudioManager : MonoBehaviour
         {
             if (musicName.Equals(music.audioName))
             {
+                // Register the time
+                music.currentTime = _audioSource.time;
+
                 // Stop the audio source
                 _audioSource.Stop();
                 return true;

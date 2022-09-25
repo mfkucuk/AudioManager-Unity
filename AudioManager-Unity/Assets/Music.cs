@@ -19,5 +19,5 @@ public class Music : ScriptableObject
 
     public float delay = 0;
 
-    public double smkfdgj;
+    public double currentTime = 0;
 }
