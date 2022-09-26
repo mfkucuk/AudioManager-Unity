@@ -19,5 +19,33 @@ public class Music : ScriptableObject
 
     public float delay = 0;
 
-    public double currentTime = 0;
+    /**
+     * <summary>
+     * Save the timestamp on the music to PlayerPrefs system so that when it's played again it doesn't restart.
+     * </summary>
+     */
+    public void SaveCurrentTime(double time)
+    {
+        PlayerPrefs.SetFloat(audioName, (float)time);
+    }
+
+    /**
+     * <summary>
+     * Load the timestamp on the music from the PlayerPrefs system so that when it's played again it doesn't restart.
+     * </summary>
+     */
+    public double LoadCurrentTime()
+    {
+        return PlayerPrefs.GetFloat(audioName, 0);
+    }
+
+    /**
+     * <summary>
+     * Sets the timestamp to 0.
+     * </summary>
+     */
+    public void ResetCurrentTime()
+    {
+        PlayerPrefs.SetFloat(audioName, 0);
+    }
 }

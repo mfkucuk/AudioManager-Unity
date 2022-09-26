@@ -15,6 +15,13 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
+
+        // Reset all the music.
+        foreach (Music music in _musicList)
+        {
+            music.ResetCurrentTime();
+        }
+
         PlaySoundEffect("testSound");
     }
 
@@ -61,10 +68,12 @@ public class AudioManager : MonoBehaviour
                 // Play the audio source
                 if (resume)
                 {
-                    _audioSource.PlayScheduled(music.currentTime);
+                    // Load the time
+                    _audioSource.PlayScheduled(music.LoadCurrentTime());
                 }
                 else
                 {
+                    music.ResetCurrentTime();
                     _audioSource.Play();
                 }
                 return true;
@@ -86,8 +95,8 @@ public class AudioManager : MonoBehaviour
         {
             if (musicName.Equals(music.audioName))
             {
-                // Register the time
-                music.currentTime = _audioSource.time;
+                // Save the time
+                music.SaveCurrentTime(_audioSource.time);
 
                 // Stop the audio source
                 _audioSource.Stop();
