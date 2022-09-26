@@ -22,7 +22,15 @@ public class AudioManager : MonoBehaviour
             music.ResetCurrentTime();
         }
 
-        PlaySoundEffect("testSound");
+        PlayMusic("music", true);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            PlaySoundEffect("ah");
+        }
     }
 
     /**
@@ -31,7 +39,7 @@ public class AudioManager : MonoBehaviour
      * <paramref name="audioName"/> is the name of the sound effect to be played.
      * </summary>
      */
-    public bool PlaySoundEffect(string audioName)
+    public void PlaySoundEffect(string audioName)
     {
         foreach (SoundEffect soundEffect in _soundEffectList)
         {
@@ -39,11 +47,10 @@ public class AudioManager : MonoBehaviour
             {
                 // Play the audio source
                 _audioSource.PlayOneShot(soundEffect.audioClip, soundEffect.volume);
-                return true;
+
+                break;
             }
         }
-
-        return false;
     }
 
     /**
@@ -52,7 +59,7 @@ public class AudioManager : MonoBehaviour
      * <paramref name="musicName"/> is the name of the music to be played.
      * </summary>
      */
-    public bool PlayMusic(string musicName, bool resume)
+    public void PlayMusic(string musicName, bool resume)
     {
         foreach (Music music in _musicList)
         {
@@ -63,7 +70,6 @@ public class AudioManager : MonoBehaviour
                 _audioSource.volume = music.volume;
                 _audioSource.pitch = music.pitch;
                 _audioSource.loop = music.isLooping;
-                _audioSource.playOnAwake = music.isPlayedOnAwake;
 
                 // Play the audio source
                 if (resume)
@@ -73,14 +79,14 @@ public class AudioManager : MonoBehaviour
                 }
                 else
                 {
-                    music.ResetCurrentTime();
+                    Debug.Log("Why aren't you working?");
+                    //music.ResetCurrentTime();
                     _audioSource.Play();
                 }
-                return true;
+
+                break;
             }
         }
-
-        return false;
     }
 
     /**
@@ -89,7 +95,7 @@ public class AudioManager : MonoBehaviour
      * <paramref name="musicName"/> is the name of the music to be played.
      * </summary>
      */
-    public bool StopMusic(string musicName)
+    public void StopMusic(string musicName)
     {
         foreach (Music music in _musicList)
         {
@@ -100,10 +106,21 @@ public class AudioManager : MonoBehaviour
 
                 // Stop the audio source
                 _audioSource.Stop();
-                return true;
+
+                break;
             }
         }
+    }
 
-        return false;
+    public void ChangeMusicVolume(string audioName, float newVolume)
+    {
+        foreach (Music music in _musicList)
+        {
+            if (audioName.Equals(music.audioName))
+            {
+                music.volume = newVolume;
+                break;
+            }
+        }
     }
 }

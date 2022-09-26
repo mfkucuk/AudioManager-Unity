@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d15a2a507ecc66488416301f21f9a64, type: 3}
   m_Name: testSoundEffect
   m_EditorClassIdentifier: 
-  audioClip: {fileID: 0}
-  audioName: 
-  volume: 0
+  audioClip: {fileID: 8300000, guid: ce1bca6f9fa8ee5428d0f0c529df3772, type: 3}
+  audioName: ah
+  volume: 1

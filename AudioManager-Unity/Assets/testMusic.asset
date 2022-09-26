@@ -12,11 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b098ec846fe5e74698a967786e1b186, type: 3}
   m_Name: testMusic
   m_EditorClassIdentifier: 
-  audioClip: {fileID: 0}
-  audioName: 
-  volume: 0
+  audioClip: {fileID: 8300000, guid: 080cdd62db8c4e3498fdc16155970ecb, type: 3}
+  audioName: music
+  volume: 1
   pitch: 0
-  isLooping: 0
-  isPlayedOnAwake: 0
+  isLooping: 1
   delay: 0
-  smkfdgj: 0

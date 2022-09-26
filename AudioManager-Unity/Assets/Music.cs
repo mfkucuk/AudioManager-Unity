@@ -15,7 +15,6 @@ public class Music : ScriptableObject
     public float pitch;
 
     public bool isLooping = false;
-    public bool isPlayedOnAwake = false;
 
     public float delay = 0;
 
