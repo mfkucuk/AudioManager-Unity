@@ -5,13 +5,30 @@
  * - Play music and sound effect using one audio source (DONE)
  * - Keep playing the music where it left off across scenes (NOT DONE)
  * - Produce very basic sound effects using code (NOT DONE)
- * - Use an audio mixer to control the volume of all musics in the game (NOT DONE)
+ * - Use an audio mixer to control the volume of all musics in the game (DONE)
+ * - Change the volume of a music in the runtime over a period of time or immediately (NOT DONE)
  */
 
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    // Singleton
+    private static AudioManager _instance;
+    public static AudioManager Instance { get { return _instance; } }
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+
     [SerializeField]
     private Music[] _musicList;
 
@@ -23,6 +40,7 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
+        SetVolume(-10);
 
         PlayMusic("music");
     }
@@ -92,15 +110,13 @@ public class AudioManager : MonoBehaviour
         _audioSource.clip = null;
     }
 
+    public void SetVolume(float newVolume)
+    {
+        _audioSource.outputAudioMixerGroup.audioMixer.SetFloat("MusicVolume", newVolume);
+    }
+
     public void ChangeMusicVolume(string audioName, float newVolume)
     {
-        foreach (Music music in _musicList)
-        {
-            if (audioName.Equals(music.audioName))
-            {
-                music.volume = newVolume;
-                break;
-            }
-        }
+        // Change volume in a specified period of time.
     }
 }
