@@ -1,7 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
+/*
+ * This is an all purpose Audio Manager that can play music and sound effect separately.
+ * 
+ * TO-DO LIST:
+ * - Play music and sound effect using one audio source (DONE)
+ * - Keep playing the music where it left off across scenes (NOT DONE)
+ * - Produce very basic sound effects using code (NOT DONE)
+ * - Use an audio mixer to control the volume of all musics in the game (NOT DONE)
+ */
+
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
