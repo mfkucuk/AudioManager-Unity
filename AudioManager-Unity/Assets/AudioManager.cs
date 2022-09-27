@@ -2,7 +2,7 @@
  * This is an all purpose Audio Manager that can play music and sound effect separately.
  * 
  * TO-DO LIST:
- * - Play music and sound effect using one audio source (DONE)
+ * - Play music and sound effect using (one)->two audio sources (DONE) (IMPROVED)
  * - Keep playing the music where it left off across scenes (NOT DONE)
  * - Produce very basic sound effects using code (NOT DONE)
  * - Use an audio mixer to control the volume of all musics in the game (DONE)
@@ -10,6 +10,7 @@
  */
 
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
@@ -35,12 +36,16 @@ public class AudioManager : MonoBehaviour
     [SerializeField]
     private SoundEffect[] _soundEffectList;
 
-    private AudioSource _audioSource;
+    [SerializeField]
+    private AudioSource _musicAudioSource;
+
+    [SerializeField]
+    private AudioSource _soundEffectAudioSource;
 
     private void Start()
     {
-        _audioSource = GetComponent<AudioSource>();
-        SetVolume(-10);
+        SetMusicVolume(-10);
+        SetSoundEffectVolume(-10);
 
         PlayMusic("music");
     }
@@ -66,7 +71,7 @@ public class AudioManager : MonoBehaviour
             if (audioName.Equals(soundEffect.audioName))
             {
                 // Play the audio source
-                _audioSource.PlayOneShot(soundEffect.audioClip, soundEffect.volume);
+                _soundEffectAudioSource.PlayOneShot(soundEffect.audioClip, soundEffect.volume);
 
                 break;
             }
@@ -86,13 +91,13 @@ public class AudioManager : MonoBehaviour
             if (musicName.Equals(music.audioName))
             {
                 // Assign the necessary information from the scriptable object
-                _audioSource.clip = music.audioClip;
-                _audioSource.volume = music.volume;
-                _audioSource.pitch = music.pitch;
-                _audioSource.loop = music.isLooping;
+                _musicAudioSource.clip = music.audioClip;
+                _musicAudioSource.volume = music.volume;
+                _musicAudioSource.pitch = music.pitch;
+                _musicAudioSource.loop = music.isLooping;
 
                 // Play the audio source
-                _audioSource.Play();
+                _musicAudioSource.Play();
 
                 break;
             }
@@ -106,13 +111,18 @@ public class AudioManager : MonoBehaviour
      */
     public void StopMusic()
     {
-        _audioSource.Stop();
-        _audioSource.clip = null;
+        _musicAudioSource.Stop();
+        _musicAudioSource.clip = null;
     }
 
-    public void SetVolume(float newVolume)
+    public void SetMusicVolume(float newVolume)
     {
-        _audioSource.outputAudioMixerGroup.audioMixer.SetFloat("MusicVolume", newVolume);
+        _musicAudioSource.outputAudioMixerGroup.audioMixer.SetFloat("MusicVolume", newVolume);
+    }
+
+    public void SetSoundEffectVolume(float newVolume)
+    {
+        _soundEffectAudioSource.outputAudioMixerGroup.audioMixer.SetFloat("SoundEffectVolume", newVolume);
     }
 
     public void ChangeMusicVolume(string audioName, float newVolume)
