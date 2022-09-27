@@ -15,6 +15,6 @@ MonoBehaviour:
   audioClip: {fileID: 8300000, guid: 080cdd62db8c4e3498fdc16155970ecb, type: 3}
   audioName: music
   volume: 1
-  pitch: 0
+  pitch: 1
   isLooping: 1
   delay: 0

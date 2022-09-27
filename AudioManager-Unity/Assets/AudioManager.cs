@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -16,13 +17,7 @@ public class AudioManager : MonoBehaviour
     {
         _audioSource = GetComponent<AudioSource>();
 
-        // Reset all the music.
-        foreach (Music music in _musicList)
-        {
-            music.ResetCurrentTime();
-        }
-
-        PlayMusic("music", true);
+        PlayMusic("music");
     }
 
     private void Update()
@@ -59,7 +54,7 @@ public class AudioManager : MonoBehaviour
      * <paramref name="musicName"/> is the name of the music to be played.
      * </summary>
      */
-    public void PlayMusic(string musicName, bool resume)
+    public void PlayMusic(string musicName)
     {
         foreach (Music music in _musicList)
         {
@@ -72,17 +67,7 @@ public class AudioManager : MonoBehaviour
                 _audioSource.loop = music.isLooping;
 
                 // Play the audio source
-                if (resume)
-                {
-                    // Load the time
-                    _audioSource.PlayScheduled(music.LoadCurrentTime());
-                }
-                else
-                {
-                    Debug.Log("Why aren't you working?");
-                    //music.ResetCurrentTime();
-                    _audioSource.Play();
-                }
+                _audioSource.Play();
 
                 break;
             }
@@ -92,24 +77,12 @@ public class AudioManager : MonoBehaviour
     /**
      * <summary>
      * This function should only be used when playing music.
-     * <paramref name="musicName"/> is the name of the music to be played.
      * </summary>
      */
-    public void StopMusic(string musicName)
+    public void StopMusic()
     {
-        foreach (Music music in _musicList)
-        {
-            if (musicName.Equals(music.audioName))
-            {
-                // Save the time
-                music.SaveCurrentTime(_audioSource.time);
-
-                // Stop the audio source
-                _audioSource.Stop();
-
-                break;
-            }
-        }
+        _audioSource.Stop();
+        _audioSource.clip = null;
     }
 
     public void ChangeMusicVolume(string audioName, float newVolume)
