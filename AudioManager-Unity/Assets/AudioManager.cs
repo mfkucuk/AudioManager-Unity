@@ -12,6 +12,7 @@
 
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : SingletonnPersistent<AudioManager>
 {
@@ -41,6 +42,15 @@ public class AudioManager : SingletonnPersistent<AudioManager>
         if (Input.GetKeyDown(KeyCode.A))
         {
             PlaySoundEffect("ah");
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            SceneManager.LoadScene(0);
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            SceneManager.LoadScene(1);
         }
     }
 
