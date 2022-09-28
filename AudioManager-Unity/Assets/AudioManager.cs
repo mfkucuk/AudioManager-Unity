@@ -1,35 +1,20 @@
 /*
  * This is an all purpose Audio Manager that can play music and sound effect separately.
+ * Author: Mehmet Feyyaz Küçük
  * 
  * TO-DO LIST:
  * - Play music and sound effect using (one)->two audio sources (DONE) (IMPROVED)
  * - Keep playing the music where it left off across scenes (NOT DONE)
  * - Produce very basic sound effects using code (NOT DONE)
  * - Use an audio mixer to control the volume of all musics in the game (DONE)
- * - Change the volume of a music in the runtime over a period of time or immediately (NOT DONE)
+ * - Change the volume of a music in the runtime over a period of time or immediately (DONE)
  */
 
+using System.Collections;
 using UnityEngine;
-using UnityEngine.Audio;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : SingletonnPersistent<AudioManager>
 {
-    // Singleton
-    private static AudioManager _instance;
-    public static AudioManager Instance { get { return _instance; } }
-
-    private void Awake()
-    {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            _instance = this;
-        }
-    }
-
     [SerializeField]
     private Music[] _musicList;
 
@@ -48,6 +33,7 @@ public class AudioManager : MonoBehaviour
         SetSoundEffectVolume(-10);
 
         PlayMusic("music");
+        ChangeMusicVolume(0.4f, 2);
     }
 
     private void Update()
@@ -125,8 +111,51 @@ public class AudioManager : MonoBehaviour
         _soundEffectAudioSource.outputAudioMixerGroup.audioMixer.SetFloat("SoundEffectVolume", newVolume);
     }
 
-    public void ChangeMusicVolume(string audioName, float newVolume)
+    /**
+     * <summary>
+     * Changes the volume of the music audio source. (Not the volume of music scriptable object!!!!!
+     * So, when the same music is played, the value before volume change will be assigned to the music audio source.)
+     * Also MUST be used with StartCoroutine();
+     * <paramref name="newVolume"/> is the desired new volume of the music audio source.
+     * <paramref name="duration"/> is the period of time for the volume transition. (0 will change it immediately.)
+     * </summary>
+     */
+    private IEnumerator ChangeMusicVolumeCoroutine(float newVolume, float duration)
     {
+        // Duration cannot be negative.
+        if (duration < 0)
+        {
+            Debug.Log("Duration must be positive.");
+            yield break;
+        }
+
         // Change volume in a specified period of time.
+        // If the duration is 0, then change the volume immediately.
+        if (duration == 0)
+        {
+            _musicAudioSource.volume = newVolume;
+            yield break;
+        }
+
+        // This interval is the amount of volume change every 1 milliseconds.
+        var interval = (newVolume - _musicAudioSource.volume) / (duration * 100);
+        for (int i = 0; i < ((int)duration * 100); i++)
+        {
+            _musicAudioSource.volume += interval;
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+
+    /**
+     * <summary>
+     * Changes the volume of the music audio source. (Not the volume of music scriptable object!!!!!
+     * So, when the same music is played, the value before volume change will be assigned to the music audio source.)
+     * <paramref name="newVolume"/> is the desired new volume of the music audio source.
+     * <paramref name="duration"/> is the period of time for the volume transition. (0 will change it immediately.)
+     * </summary>
+     */
+    public void ChangeMusicVolume(float newVolume, float duration = 0)
+    {
+        StartCoroutine(ChangeMusicVolumeCoroutine(newVolume, duration));
     }
 }
