@@ -5,7 +5,7 @@
  * TO-DO LIST:
  * - Play music and sound effect using (one)->two audio sources (DONE) (IMPROVED)
  * - Keep playing the music where it left off across scenes (DONE)
- * - Produce very basic sound effects using code (NOT DONE)
+ * - Produce very basic sound effects using code (DONE)
  * - Use an audio mixer to control the volume of all musics in the game (DONE)
  * - Change the volume of a music in the runtime over a period of time or immediately (DONE)
  */
@@ -57,26 +57,6 @@ public class AudioManager : SingletonnPersistent<AudioManager>
 
         SetMusicVolume(-10);
         SetSoundEffectVolume(-10);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            PlayCustomSoundEffect("E4");
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            PlayCustomSoundEffect("A4");
-        }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            PlayCustomSoundEffect("B4");
-        }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            PlayCustomSoundEffect("C4");
-        }
     }
 
     /**
@@ -194,12 +174,34 @@ public class AudioManager : SingletonnPersistent<AudioManager>
         StartCoroutine(ChangeMusicVolumeCoroutine(newVolume, duration));
     }
 
-    public void PlayCustomSoundEffect(string track)
+    private IEnumerator PlayCustomSoundEffectCoroutine(string track, float timeBetweenNotes)
     {
         // Convert to all upper letters
-        track = track.ToUpper();
+        track = track.ToUpper() + "-";
+        string currentNote = "";
         
-        _customSoundEffectAudioSource.pitch = Mathf.Pow(SEMITONE, _notes[track]);
-        _customSoundEffectAudioSource.Play();
+        // For each note in the track...
+        for (int i = 0; i < track.Length; i++)
+        {
+            if (track[i] != '-')
+            {
+                currentNote += track[i];
+            }
+            else
+            {
+                _customSoundEffectAudioSource.pitch = Mathf.Pow(SEMITONE, _notes[currentNote]);
+                _customSoundEffectAudioSource.Play();
+
+                currentNote = "";
+            }
+            yield return new WaitForSeconds(timeBetweenNotes);
+
+            _customSoundEffectAudioSource.Stop();
+        }
+    }
+
+    public void PlayCustomSoundEffect(string track, float timeBetweenNotes = .5f)
+    {
+        StartCoroutine(PlayCustomSoundEffectCoroutine(track, timeBetweenNotes));
     }
 }
