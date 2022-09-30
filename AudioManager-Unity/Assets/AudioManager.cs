@@ -4,15 +4,15 @@
  * 
  * TO-DO LIST:
  * - Play music and sound effect using (one)->two audio sources (DONE) (IMPROVED)
- * - Keep playing the music where it left off across scenes (NOT DONE)
+ * - Keep playing the music where it left off across scenes (DONE)
  * - Produce very basic sound effects using code (NOT DONE)
  * - Use an audio mixer to control the volume of all musics in the game (DONE)
  * - Change the volume of a music in the runtime over a period of time or immediately (DONE)
  */
 
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class AudioManager : SingletonnPersistent<AudioManager>
 {
@@ -28,29 +28,54 @@ public class AudioManager : SingletonnPersistent<AudioManager>
     [SerializeField]
     private AudioSource _soundEffectAudioSource;
 
+    [SerializeField]
+    private AudioSource _customSoundEffectAudioSource;
+
+
+    private Dictionary<string, int> _notes;
+    private const float SEMITONE = 1.05946f;
+
     private void Start()
     {
+        // Declarations
+
+        // Add notes to the dictionary
+        _notes = new Dictionary<string, int>
+        {
+            ["G3"] = -9,
+            ["A4"] = -7,
+            ["B4"] = -5,
+            ["C4"] = -4,
+            ["D4"] = -2,
+            ["E4"] = 0,
+            ["F4"] = 1,
+            ["G4"] = 3,
+            ["A5"] = 5,
+            ["B5"] = 7,
+            ["C5"] = 8,
+        };
+
         SetMusicVolume(-10);
         SetSoundEffectVolume(-10);
-
-        PlayMusic("music");
-        ChangeMusicVolume(0.4f, 2);
     }
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            PlayCustomSoundEffect("E4");
+        }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            PlaySoundEffect("ah");
+            PlayCustomSoundEffect("A4");
         }
-
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.B))
         {
-            SceneManager.LoadScene(0);
+            PlayCustomSoundEffect("B4");
         }
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.C))
         {
-            SceneManager.LoadScene(1);
+            PlayCustomSoundEffect("C4");
         }
     }
 
@@ -167,5 +192,14 @@ public class AudioManager : SingletonnPersistent<AudioManager>
     public void ChangeMusicVolume(float newVolume, float duration = 0)
     {
         StartCoroutine(ChangeMusicVolumeCoroutine(newVolume, duration));
+    }
+
+    public void PlayCustomSoundEffect(string track)
+    {
+        // Convert to all upper letters
+        track = track.ToUpper();
+        
+        _customSoundEffectAudioSource.pitch = Mathf.Pow(SEMITONE, _notes[track]);
+        _customSoundEffectAudioSource.Play();
     }
 }
