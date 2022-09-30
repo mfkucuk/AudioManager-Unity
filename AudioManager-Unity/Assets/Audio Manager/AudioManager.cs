@@ -57,8 +57,6 @@ public class AudioManager : SingletonnPersistent<AudioManager>
 
         SetMusicVolume(-10);
         SetSoundEffectVolume(-10);
-
-        PlayCustomSoundEffect("B4-G3", .06f);
     }
 
     /**
