@@ -57,6 +57,8 @@ public class AudioManager : SingletonnPersistent<AudioManager>
 
         SetMusicVolume(-10);
         SetSoundEffectVolume(-10);
+
+        PlayCustomSoundEffect("B4-G3", .06f);
     }
 
     /**
@@ -116,11 +118,19 @@ public class AudioManager : SingletonnPersistent<AudioManager>
         _musicAudioSource.clip = null;
     }
 
+    /// <summary>
+    /// Change the overall volume of musics.
+    /// </summary>
+    /// <param name="newVolume"></param> is the new volume to be set for musics.
     public void SetMusicVolume(float newVolume)
     {
         _musicAudioSource.outputAudioMixerGroup.audioMixer.SetFloat("MusicVolume", newVolume);
     }
 
+    /// <summary>
+    /// Change the overall volume of sound effects.
+    /// </summary>
+    /// <param name="newVolume"></param> is the new volume to be set for sound effects.
     public void SetSoundEffectVolume(float newVolume)
     {
         _soundEffectAudioSource.outputAudioMixerGroup.audioMixer.SetFloat("SoundEffectVolume", newVolume);
@@ -200,7 +210,20 @@ public class AudioManager : SingletonnPersistent<AudioManager>
         }
     }
 
-    public void PlayCustomSoundEffect(string track, float timeBetweenNotes = .5f)
+    /// <summary>
+    /// Create a sound effect in code using track.
+    /// Example format is the following: "C4-D4-E4"
+    /// Letters represent the note, and number represent the octave.
+    /// [C: Do, D: Re, E: Mi, F: Fa, G: Sol, A: La, B: Si]
+    /// Interval of the notes that can be played: [G3-C5] (G3 being the lowest, C5 being the highest)
+    /// Example sound effects:
+    ///     - Collectible Pick-up sound: "F4-A5"
+    ///     - Door Closing: "B4-G3"
+    ///     - Door Opening: "G3-B4"
+    /// </summary>
+    /// <param name="track"></param> is the set of notes.
+    /// <param name="timeBetweenNotes"></param> is the time interval between any two notes.
+    public void PlayCustomSoundEffect(string track, float timeBetweenNotes = .06f)
     {
         StartCoroutine(PlayCustomSoundEffectCoroutine(track, timeBetweenNotes));
     }
