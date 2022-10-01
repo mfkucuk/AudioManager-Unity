@@ -52,6 +52,7 @@ MonoBehaviour:
   _musicAudioSource: {fileID: 6762879007140784107}
   _soundEffectAudioSource: {fileID: 6762879007140784104}
   _customSoundEffectAudioSource: {fileID: 6762879007140784105}
+  _blip: {fileID: 8300000, guid: 9521e57d080fbe247b6edb87a1a3c7b7, type: 3}
 --- !u!82 &6762879007140784107
 AudioSource:
   m_ObjectHideFlags: 0
@@ -166,7 +167,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 0
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

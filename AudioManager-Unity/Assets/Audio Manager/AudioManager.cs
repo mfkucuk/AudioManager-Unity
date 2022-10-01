@@ -31,9 +31,11 @@ public class AudioManager : SingletonnPersistent<AudioManager>
     [SerializeField]
     private AudioSource _customSoundEffectAudioSource;
 
-
     private Dictionary<string, int> _notes;
     private const float SEMITONE = 1.05946f;
+
+    [SerializeField]
+    private AudioClip _blip;
 
     private void Start()
     {
@@ -198,13 +200,11 @@ public class AudioManager : SingletonnPersistent<AudioManager>
             else
             {
                 _customSoundEffectAudioSource.pitch = Mathf.Pow(SEMITONE, _notes[currentNote]);
-                _customSoundEffectAudioSource.Play();
+                _customSoundEffectAudioSource.PlayOneShot(_blip);
 
                 currentNote = "";
             }
             yield return new WaitForSeconds(timeBetweenNotes);
-
-            _customSoundEffectAudioSource.Stop();
         }
     }
 
