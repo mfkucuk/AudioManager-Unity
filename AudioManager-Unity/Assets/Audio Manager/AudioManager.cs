@@ -1,6 +1,6 @@
 /*
  * This is an all purpose Audio Manager that can play music and sound effect separately.
- * Author: Mehmet Feyyaz Küçük
+ * Author: Mehmet Feyyaz KÃ¼Ã§Ã¼k
  * 
  * TO-DO LIST:
  * - Play music and sound effect using (one)->two audio sources (DONE) (IMPROVED)
@@ -44,17 +44,20 @@ public class AudioManager : SingletonnPersistent<AudioManager>
         // Add notes to the dictionary
         _notes = new Dictionary<string, int>
         {
+            ["F3"] = -11,
             ["G3"] = -9,
-            ["A4"] = -7,
-            ["B4"] = -5,
+            ["A3"] = -7,
+            ["B3"] = -5,
             ["C4"] = -4,
             ["D4"] = -2,
             ["E4"] = 0,
             ["F4"] = 1,
             ["G4"] = 3,
-            ["A5"] = 5,
-            ["B5"] = 7,
+            ["A4"] = 5,
+            ["B4"] = 7,
             ["C5"] = 8,
+            ["D5"] = 10,
+            ["E5"] = 12
         };
 
         SetMusicVolume(-10);
