@@ -44,6 +44,7 @@ public class AudioManager : SingletonnPersistent<AudioManager>
         // Add notes to the dictionary
         _notes = new Dictionary<string, int>
         {
+            ["E3"] = -12,
             ["F3"] = -11,
             ["G3"] = -9,
             ["A3"] = -7,
@@ -57,7 +58,8 @@ public class AudioManager : SingletonnPersistent<AudioManager>
             ["B4"] = 7,
             ["C5"] = 8,
             ["D5"] = 10,
-            ["E5"] = 12
+            ["E5"] = 12,
+            ["F5"] = 13
         };
 
         SetMusicVolume(-10);
