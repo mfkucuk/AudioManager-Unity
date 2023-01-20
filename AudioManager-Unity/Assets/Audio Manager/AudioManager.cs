@@ -37,9 +37,13 @@ public class AudioManager : SingletonnPersistent<AudioManager>
     [SerializeField]
     private AudioClip _blip;
 
+    private bool _isMusicPlaying;
+    public bool IsMusicPlaying => _isMusicPlaying;
+
     private void Start()
     {
         // Declarations
+        _isMusicPlaying = false;
 
         // Add notes to the dictionary
         _notes = new Dictionary<string, int>
@@ -106,6 +110,7 @@ public class AudioManager : SingletonnPersistent<AudioManager>
 
                 // Play the audio source
                 _musicAudioSource.Play();
+                _isMusicPlaying = true;
 
                 break;
             }
@@ -120,6 +125,7 @@ public class AudioManager : SingletonnPersistent<AudioManager>
     public void StopMusic()
     {
         _musicAudioSource.Stop();
+        _isMusicPlaying = false;
         _musicAudioSource.clip = null;
     }
 
